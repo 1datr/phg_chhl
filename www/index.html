@@ -1,0 +1,92 @@
+ <!DOCTYPE html> 
+
+<html> 
+
+	<head> 
+	  <meta name="viewport" content="user-scalable=no,width=device-width" />
+	  <meta http-equiv=Content-Type content="text/html;charset=UTF-8">
+	  <link rel="stylesheet" href="css/jquery.mobile-1.4.0.min.css" />
+	  	<script src="js/jquery-1.10.2.min.js"></script>
+	  	<script src="js/jquery.mobile-1.4.0.min.js"></script>
+	  	<script src="js/jQuery.ui.datepicker.js"></script>
+		<script src="js/jquery.ui.datepicker.mobile.js"></script>
+		<script src="js/rss.js"></script>
+	  <title>Чувашская хоккейная лига</title>
+	</head>   
+
+<body> 
+
+	<div data-role="page" id="mainPage">
+	  <div data-role="header">
+	  <h1>Чувашская хоккейная лига</h1>
+	    <div data-role="navbar">
+	      <ul>
+	        <li><a href="#news" class="ui-btn-active ui-btn-persist">Новости</a></li>
+	        <li><a href="#league">Лига</a></li>
+	        <li><a href="#calendar">Календарь</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	  <div data-role="content">
+	    <div id="news">
+	    	<ul id="rss_news" data-role="listview" data-inset="true">
+	    	</ul>	    	
+	    </div>
+	    <div id="league" class="ui-tabs-hide" style="display:none;">
+	    	<ul id="rss_league" data-role="listview" data-inset="true">
+	    	</ul>		    	
+	    </div>
+	    <div id="calendar" class="ui-tabs-hide" style="display:none;">Three content
+
+<input name="mydate" id="mydate" type="date" data-role="datebox" data-options='{"mode": "calbox", "calHighToday": false, "calHighPicked": false, "useInline": true, "useInlineHideInput": true, "highDates": ["2011-06-25", "2011-06-27", "2011-07-04"]}'></input>
+ 
+	    </div>
+	  </div>
+	</div>
+
+</body>
+</html>
+
+
+<script>
+(function($) {
+	 
+	// Before handling a page change...
+	$(document).bind("pagebeforechange", function(e, data)
+	{
+	    // If the new page is not being loaded by URL, bail
+	    if (typeof data.toPage !== "string")
+	    {
+	        return;
+	    }
+	 
+	    // If the new page has a corresponding navbar link, activate its content div
+	    var url = $.mobile.path.parseUrl(data.toPage);
+	    var $a = $("div[data-role='navbar'] a[href='" + url.hash + "']");
+	    if ($a.length)
+	    {
+	        // Suppress normal page change handling since we're handling it here for this case
+	        e.preventDefault();
+	    }
+	    // If the new page has a navbar, activate the content div for its active item
+	    else
+	    {
+	        $a = $(url.hash + " div[data-role='navbar']").find("a.ui-btn-active");
+	 
+	        // Allow normal page change handling to continue in this case so the new page finishes rendering
+	    }
+	 
+	    // Show the content div to be activated and hide other content divs for this page
+	    var $content = $($a.attr("href"));
+	    $content.siblings().hide();
+	    $content.show();
+	});
+	 
+	})(jQuery);
+
+	//reset type=date inputs to text
+	$(document).bind( "mobileinit", function(){
+		$.mobile.page.prototype.options.degradeInputs.date = true;
+	})(jQuery);	
+
+</script>
